@@ -4,12 +4,31 @@ from sqlalchemy.sql import func
 from wtforms import Form,StringField,TextAreaField,PasswordField,validators
 from passlib.hash import sha256_crypt
 from functools import wraps
-from models import users,myarticles
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 db = SQLAlchemy(app)
+
+
+# myarticles table
+class myarticles(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(20))
+    author = db.Column(db.String(50))
+    body = db.Column(db.Text)
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+
+
+# users table
+class users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    username = db.Column(db.String(30))
+    email = db.Column(db.String(100))
+    password = db.Column(db.String(20))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
 
 
 # Index
